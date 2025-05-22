@@ -6,6 +6,7 @@ import {
   BookOpenIcon,
   BellIcon,
   QuestionMarkCircleIcon,
+  ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
 
 const navigation = [
@@ -14,6 +15,7 @@ const navigation = [
   { name: "Students", href: "/admin/students", icon: UserGroupIcon },
   { name: "Lecturers", href: "/admin/lecturers", icon: AcademicCapIcon },
   { name: "Announcements", href: "/admin/announcements", icon: BellIcon },
+  { name: "Messages", href: "/admin/messages", icon: ChatBubbleLeftRightIcon },
   { name: "Support", href: "/admin/support", icon: QuestionMarkCircleIcon },
 ];
 
