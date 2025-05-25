@@ -5,6 +5,8 @@ import Dashboard from "./pages/admin/Dashboard";
 import Classes from "./pages/admin/Classes";
 import Announcement from "./pages/admin/Announcement";
 import Messages from "./pages/admin/Messages";
+import StudentsList from "./pages/StudentsList";
+import TeachersList from "./pages/TeachersList";
 
 const App = () => {
   // TODO: Add proper authentication check
@@ -27,6 +29,8 @@ const App = () => {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="classes" element={<Classes />} />
+          <Route path="students" element={<StudentsList />} />
+          <Route path="lecturers" element={<TeachersList />} />
           <Route path="announcements" element={<Announcement />} />
           <Route path="messages" element={<Messages />} />
           {/* Add more routes as needed */}
