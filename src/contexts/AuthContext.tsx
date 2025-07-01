@@ -1,21 +1,15 @@
-import React, { createContext, useContext, useState } from 'react';
-
-type UserRole = 'ADMIN' | 'SUPER_ADMIN';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  department?: string;
-  avatar?: string;
-}
+import React, { createContext, useContext, useEffect } from 'react';
+import { useAuthStore } from '../stores/authStore';
+import { User } from '../types/api';
 
 interface AuthContextType {
   user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  isAuthenticated: boolean;
+  clearError: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,39 +23,33 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    // Mock user for development - replace with actual auth logic
-    return {
-      id: '1',
-      name: 'John Admin',
-      email: 'admin@university.com',
-      role: 'SUPER_ADMIN',
-      department: 'Computer Science',
-    };
-  });
+  const {
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
+    login: storeLogin,
+    logout: storeLogout,
+    clearError,
+  } = useAuthStore();
 
   const login = async (email: string, password: string) => {
-    // Mock login - replace with actual API call
-    const mockUser: User = {
-      id: '1',
-      name: 'John Admin',
-      email,
-      role: email.includes('super') ? 'SUPER_ADMIN' : 'ADMIN',
-      department: 'Computer Science',
-    };
-    setUser(mockUser);
+    await storeLogin({ email, password });
   };
 
   const logout = () => {
-    setUser(null);
+    storeLogout();
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      logout, 
-      isAuthenticated: !!user 
+    <AuthContext.Provider value={{
+      user,
+      isAuthenticated,
+      isLoading,
+      error,
+      login,
+      logout,
+      clearError,
     }}>
       {children}
     </AuthContext.Provider>

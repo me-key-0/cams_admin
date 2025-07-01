@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   UserGroupIcon,
   AcademicCapIcon,
@@ -13,63 +13,69 @@ import { BarChart } from '../../../components/charts/BarChart';
 import { LineChart } from '../../../components/charts/LineChart';
 import { PieChart } from '../../../components/charts/PieChart';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useDashboardStore } from '../../../stores/dashboardStore';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const { stats, isLoading, error, fetchDashboardStats } = useDashboardStore();
 
-  const stats = [
+  useEffect(() => {
+    fetchDashboardStats();
+  }, [fetchDashboardStats]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p className="text-red-800">Error loading dashboard: {error}</p>
+      </div>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <p className="text-gray-600">No data available</p>
+      </div>
+    );
+  }
+
+  const statCards = [
     {
       name: 'Total Students',
-      value: '2,847',
+      value: stats.totalStudents.toLocaleString(),
       change: '+12.5%',
       changeType: 'increase' as const,
       icon: UserGroupIcon,
     },
     {
       name: 'Active Lecturers',
-      value: '156',
+      value: stats.totalLecturers.toLocaleString(),
       change: '+3.2%',
       changeType: 'increase' as const,
       icon: AcademicCapIcon,
     },
     {
       name: 'Active Courses',
-      value: '89',
+      value: stats.activeCourses.toLocaleString(),
       change: '+8.1%',
       changeType: 'increase' as const,
       icon: BookOpenIcon,
     },
     {
       name: 'Completion Rate',
-      value: '94.2%',
+      value: `${stats.completionRate}%`,
       change: '-2.1%',
       changeType: 'decrease' as const,
       icon: ChartBarIcon,
     },
-  ];
-
-  const enrollmentData = [
-    { label: 'Jan', value: 120 },
-    { label: 'Feb', value: 150 },
-    { label: 'Mar', value: 180 },
-    { label: 'Apr', value: 160 },
-    { label: 'May', value: 200 },
-    { label: 'Jun', value: 220 },
-  ];
-
-  const departmentData = [
-    { label: 'Computer Science', value: 45, color: '#3B82F6' },
-    { label: 'Engineering', value: 35, color: '#10B981' },
-    { label: 'Business', value: 25, color: '#F59E0B' },
-    { label: 'Arts', value: 15, color: '#EF4444' },
-  ];
-
-  const coursePerformance = [
-    { label: 'CS101', value: 85 },
-    { label: 'ENG201', value: 92 },
-    { label: 'BUS301', value: 78 },
-    { label: 'ART101', value: 88 },
-    { label: 'CS202', value: 91 },
   ];
 
   return (
@@ -80,13 +86,13 @@ const Dashboard: React.FC = () => {
           {user?.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Admin'} Dashboard
         </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-400">
-          Welcome back, {user?.name}. Here's what's happening in your {user?.role === 'SUPER_ADMIN' ? 'institution' : 'department'}.
+          Welcome back, {user?.firstname} {user?.lastname}. Here's what's happening in your {user?.role === 'SUPER_ADMIN' ? 'institution' : 'department'}.
         </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+        {statCards.map((stat) => (
           <Card key={stat.name}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -134,7 +140,7 @@ const Dashboard: React.FC = () => {
             <CardTitle>Enrollment Trends</CardTitle>
           </CardHeader>
           <CardContent>
-            <LineChart data={enrollmentData} height={200} />
+            <LineChart data={stats.enrollmentTrends} height={200} />
           </CardContent>
         </Card>
 
@@ -144,7 +150,7 @@ const Dashboard: React.FC = () => {
             <CardTitle>Department Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <PieChart data={departmentData} size={200} />
+            <PieChart data={stats.departmentDistribution} size={200} />
           </CardContent>
         </Card>
       </div>
@@ -155,7 +161,7 @@ const Dashboard: React.FC = () => {
           <CardTitle>Course Performance</CardTitle>
         </CardHeader>
         <CardContent>
-          <BarChart data={coursePerformance} height={250} />
+          <BarChart data={stats.coursePerformance} height={250} />
         </CardContent>
       </Card>
 
