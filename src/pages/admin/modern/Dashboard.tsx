@@ -4,8 +4,8 @@ import {
   AcademicCapIcon,
   BookOpenIcon,
   ChartBarIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
 } from '@heroicons/react/24/outline';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/Card';
 import { Badge } from '../../../components/ui/Badge';
@@ -104,9 +104,9 @@ const Dashboard: React.FC = () => {
               </div>
               <div className="mt-4 flex items-center">
                 {stat.changeType === 'increase' ? (
-                  <TrendingUpIcon className="h-4 w-4 text-green-500" />
+                  <ArrowTrendingUpIcon className="h-4 w-4 text-green-500" />
                 ) : (
-                  <TrendingDownIcon className="h-4 w-4 text-red-500" />
+                  <ArrowTrendingDownIcon className="h-4 w-4 text-red-500" />
                 )}
                 <span
                   className={`ml-1 text-sm font-medium ${
