@@ -34,7 +34,7 @@ export const ModernHeader: React.FC<ModernHeaderProps> = ({ onToggleSidebar }) =
 
         <div className="flex items-center space-x-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-medium">
-            {user?.name.charAt(0)}
+            {user?.name?.charAt(0)}
           </div>
           <div className="hidden md:block">
             <p className="text-sm font-medium text-gray-900 dark:text-white">

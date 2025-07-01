@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { userApi, courseApi, handleApiResponse, handleApiError } from '../services/api';
-import { DashboardStats } from '../types/api';
+import type { DashboardStats } from '../types/api';
+
 
 interface DashboardState {
   stats: DashboardStats | null;

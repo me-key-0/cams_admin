@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { userApi, handleApiResponse, handleApiError } from '../services/api';
-import { User } from '../types/api';
+import type { User } from '../types/api';
+
 
 interface UserState {
   users: User[];

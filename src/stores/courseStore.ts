@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { courseApi, handleApiResponse, handleApiError } from '../services/api';
-import { Course, Batch, CourseSession } from '../types/api';
+import type { Batch, Course, CourseSession } from '../types/api';
+
 
 interface CourseState {
   courses: Course[];

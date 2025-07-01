@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { communicationApi, handleApiResponse, handleApiError } from '../services/api';
+import { communicationApi, handleApiResponse, handleApiError, apiClient } from '../services/api';
 import type { 
   Announcement, 
   AnnouncementResponse, 
@@ -44,7 +44,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      const response = await communicationApi.get<Announcement[]>('/announcements/admin');
+      const response = await apiClient.get<Announcement[]>('/announcements/admin');
       const announcements = handleApiResponse(response);
       
       set({ 
@@ -62,7 +62,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      const response = await communicationApi.get<Announcement[]>('/announcements/my-announcements');
+      const response = await apiClient.get<Announcement[]>('/announcements/my-announcements');
       const myAnnouncements = handleApiResponse(response);
       
       set({ myAnnouncements, isLoading: false });
@@ -76,7 +76,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      const response = await communicationApi.post<Announcement>('/announcements', data);
+      const response = await apiClient.post<Announcement>('/api/com/announcements', data);
       const newAnnouncement = handleApiResponse(response);
       
       set(state => ({
@@ -95,7 +95,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      const response = await communicationApi.put<Announcement>(`/announcements/${id}`, data);
+      const response = await apiClient.put<Announcement>(`/announcements/${id}`, data);
       const updatedAnnouncement = handleApiResponse(response);
       
       set(state => ({
@@ -117,7 +117,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      await communicationApi.delete(`/announcements/${id}`);
+      await apiClient.delete(`/announcements/${id}`);
       
       set(state => ({
         announcements: state.announcements.filter(announcement => announcement.id !== id),
@@ -136,7 +136,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      const response = await communicationApi.get<AnnouncementResponse>('/announcements');
+      const response = await apiClient.get<AnnouncementResponse>('/announcements');
       const data = handleApiResponse(response);
       
       set({ 
@@ -155,7 +155,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       
-      const response = await communicationApi.get<AnnouncementResponse>(`/announcements/category/${category}`);
+      const response = await apiClient.get<AnnouncementResponse>(`/announcements/category/${category}`);
       const data = handleApiResponse(response);
       
       set({ 
@@ -172,7 +172,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
 
   markAsRead: async (id: number) => {
     try {
-      await communicationApi.post(`/announcements/${id}/mark-read`);
+      await apiClient.post(`/announcements/${id}/mark-read`);
       
       set(state => ({
         announcements: state.announcements.map(announcement =>
@@ -188,7 +188,7 @@ export const useAnnouncementStore = create<AnnouncementState>((set, get) => ({
 
   fetchUnreadCount: async () => {
     try {
-      const response = await communicationApi.get<number>('/announcements/unread-count');
+      const response = await apiClient.get<number>('/announcements/unread-count');
       const unreadCount = handleApiResponse(response);
       
       set({ unreadCount });

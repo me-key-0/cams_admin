@@ -109,14 +109,14 @@ export const ModernSidebar: React.FC<ModernSidebarProps> = ({ isCollapsed }) => 
         <div className="border-t border-gray-200 dark:border-gray-800 p-4">
           <div className="flex items-center">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white text-sm font-medium">
-              {user.name.charAt(0)}
+              {user?.name?.charAt(0)}
             </div>
             <div className="ml-3 flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                {user.name}
+                {user?.name}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                {user.role.replace('_', ' ')}
+                {user?.role.replace('_', ' ')}
               </p>
             </div>
           </div>
