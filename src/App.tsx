@@ -10,6 +10,7 @@ import StudentManagement from './pages/admin/modern/StudentManagement';
 import LecturerManagement from './pages/admin/modern/LecturerManagement';
 import AnnouncementManagement from './pages/admin/modern/AnnouncementManagement';
 import EvaluationManagement from './pages/admin/modern/EvaluationManagement';
+import EvaluationSessionDetail from './pages/admin/modern/EvaluationSessionDetail';
 import EvaluationSubmission from './pages/admin/modern/EvaluationSubmission';
 import ComingSoon from './pages/admin/modern/ComingSoon';
 
@@ -28,6 +29,7 @@ const App = () => {
               <Route path="lecturers" element={<LecturerManagement />} />
               <Route path="announcements" element={<AnnouncementManagement />} />
               <Route path="evaluations" element={<EvaluationManagement />} />
+              <Route path="evaluations/:sessionId" element={<EvaluationSessionDetail />} />
               <Route path="evaluation-submit" element={<EvaluationSubmission />} />
               <Route 
                 path="courses" 

@@ -11,6 +11,7 @@ import {
   CheckCircleIcon,
   XCircleIcon
 } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/Card';
 import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
@@ -20,6 +21,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import type { CreateEvaluationSessionRequest, EvaluationSession } from '../../../types/api';
 
 const EvaluationManagement: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const {
     evaluationSessions,
@@ -38,7 +40,6 @@ const EvaluationManagement: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [viewingAnalytics, setViewingAnalytics] = useState<EvaluationSession | null>(null);
 
   const [formData, setFormData] = useState<CreateEvaluationSessionRequest>({
     courseSessionId: 0,
@@ -86,6 +87,10 @@ const EvaluationManagement: React.FC = () => {
     if (window.confirm('Are you sure you want to activate this evaluation session?')) {
       await activateEvaluationSession(sessionId);
     }
+  };
+
+  const handleViewSession = (session: EvaluationSession) => {
+    navigate(`/admin/evaluations/${session.id}`);
   };
 
   const handleCancel = () => {
@@ -359,6 +364,16 @@ const EvaluationManagement: React.FC = () => {
                         <CalendarIcon className="h-4 w-4 mr-1" />
                         <span>{formatDate(session.startDate)} - {formatDate(session.endDate)}</span>
                       </div>
+                      {session.submissionCount !== undefined && (
+                        <div className="flex items-center">
+                          <span>{session.submissionCount} submissions</span>
+                        </div>
+                      )}
+                      {session.averageRating !== undefined && (
+                        <div className="flex items-center">
+                          <span>Avg: {session.averageRating.toFixed(1)}/5</span>
+                        </div>
+                      )}
                     </div>
                     
                     <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -373,7 +388,7 @@ const EvaluationManagement: React.FC = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setViewingAnalytics(session)}
+                      onClick={() => handleViewSession(session)}
                     >
                       <EyeIcon className="h-4 w-4" />
                     </Button>
@@ -416,80 +431,6 @@ const EvaluationManagement: React.FC = () => {
           </div>
         </CardContent>
       </Card>
-
-      {/* Analytics Modal */}
-      {viewingAnalytics && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[80vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                    Evaluation Analytics
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {viewingAnalytics.courseCode} - {viewingAnalytics.courseName}
-                  </p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setViewingAnalytics(null)}
-                >
-                  ×
-                </Button>
-              </div>
-              
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="text-center">
-                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Total Evaluations
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                          {departmentAnalytics.find(a => a.courseSessionId === viewingAnalytics.courseSessionId)?.totalSubmissions || 0}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="text-center">
-                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Average Rating
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                          {departmentAnalytics.find(a => a.courseSessionId === viewingAnalytics.courseSessionId)?.overallRating?.toFixed(1) || 'N/A'}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="text-center">
-                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                          Status
-                        </p>
-                        <Badge variant={getStatusBadgeVariant(viewingAnalytics.isActive)}>
-                          {viewingAnalytics.isActive ? 'Active' : 'Completed'}
-                        </Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                <div className="text-center text-gray-500 dark:text-gray-400">
-                  <p>Detailed analytics will be available once evaluations are submitted.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

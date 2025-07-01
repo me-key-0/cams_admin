@@ -231,6 +231,8 @@ export interface EvaluationSession {
   activatedBy?: number;
   courseCode: string;
   courseName: string;
+  submissionCount?: number;
+  averageRating?: number;
 }
 
 export interface CreateEvaluationSessionRequest {
@@ -283,6 +285,26 @@ export interface EvaluationSessionStatusResponse {
   message: string;
 }
 
+export interface EvaluationSubmission {
+  id: number;
+  studentId: number;
+  studentName: string;
+  lecturerId: number;
+  lecturerName: string;
+  courseSessionId: number;
+  submittedAt: string;
+  overallRating: number;
+  categoryRatings: Record<string, number>;
+  answers: EvaluationSubmissionAnswer[];
+}
+
+export interface EvaluationSubmissionAnswer {
+  questionId: number;
+  question: string;
+  category: string;
+  rating: number;
+}
+
 export interface EvaluationAnalytics {
   lecturerId: number;
   lecturerName: string;
@@ -293,6 +315,8 @@ export interface EvaluationAnalytics {
   overallRating: number;
   categoryRatings: Record<string, number>;
   questionAnalytics: QuestionAnalytics[];
+  ratingDistribution: Record<string, number>;
+  submissionTrend: { date: string; count: number }[];
 }
 
 export interface QuestionAnalytics {
