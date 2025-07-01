@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { type AxiosInstance, AxiosResponse } from 'axios';
 import { useAuthStore } from '../stores/authStore';
 
 // API Base URLs
