@@ -1,42 +1,40 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
 import Login from "./pages/auth/Login";
-import AdminLayout from "./components/layout/AdminLayout";
-import Dashboard from "./pages/admin/Dashboard";
-import Classes from "./pages/admin/Classes";
-import Announcement from "./pages/admin/Announcement";
-import Messages from "./pages/admin/Messages";
-import StudentsList from "./pages/StudentsList";
-import TeachersList from "./pages/TeachersList";
+import { ModernLayout } from './components/layout/ModernLayout';
+import Dashboard from './pages/admin/modern/Dashboard';
+import UserManagement from './pages/admin/modern/UserManagement';
 
 const App = () => {
-  // TODO: Add proper authentication check
-  const isAuthenticated = false;
-
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/admin/dashboard" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="classes" element={<Classes />} />
-          <Route path="students" element={<StudentsList />} />
-          <Route path="lecturers" element={<TeachersList />} />
-          <Route path="announcements" element={<Announcement />} />
-          <Route path="messages" element={<Messages />} />
-          {/* Add more routes as needed */}
-        </Route>
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/admin" element={<ModernLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="users" element={<UserManagement />} />
+              <Route path="students" element={<div>Students Management - Coming Soon</div>} />
+              <Route path="lecturers" element={<div>Lecturers Management - Coming Soon</div>} />
+              <Route path="courses" element={<div>Course Management - Coming Soon</div>} />
+              <Route path="batches" element={<div>Batch Management - Coming Soon</div>} />
+              <Route path="enrollment" element={<div>Enrollment Management - Coming Soon</div>} />
+              <Route path="grades" element={<div>Grades & Assessment - Coming Soon</div>} />
+              <Route path="announcements" element={<div>Announcements - Coming Soon</div>} />
+              <Route path="messages" element={<div>Messages & Support - Coming Soon</div>} />
+              <Route path="evaluations" element={<div>Evaluation System - Coming Soon</div>} />
+              <Route path="reports" element={<div>Reports & Analytics - Coming Soon</div>} />
+              <Route path="departments" element={<div>Department Management - Coming Soon</div>} />
+              <Route path="settings" element={<div>System Settings - Coming Soon</div>} />
+            </Route>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 
