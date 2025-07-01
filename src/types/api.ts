@@ -163,9 +163,31 @@ export interface Announcement {
   content: string;
   category: 'ACADEMIC' | 'ADMINISTRATIVE';
   createdAt: string;
-  createdBy: number;
-  departmentId: number;
+  createdBy: string;
+  createdByName: string;
+  role: string;
+  departmentCode: string;
+  isGlobal: boolean;
+  active: boolean;
   isRead?: boolean;
+}
+
+export interface AnnouncementResponse {
+  totalAnnouncements: number;
+  unreadCount: number;
+  announcements: Announcement[];
+}
+
+export interface CreateAnnouncementRequest {
+  title: string;
+  content: string;
+  category: 'ACADEMIC' | 'ADMINISTRATIVE';
+}
+
+export interface UpdateAnnouncementRequest {
+  title: string;
+  content: string;
+  category: 'ACADEMIC' | 'ADMINISTRATIVE';
 }
 
 export interface Notification {

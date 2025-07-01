@@ -8,6 +8,7 @@ import Dashboard from './pages/admin/modern/Dashboard';
 import UserManagement from './pages/admin/modern/UserManagement';
 import StudentManagement from './pages/admin/modern/StudentManagement';
 import LecturerManagement from './pages/admin/modern/LecturerManagement';
+import AnnouncementManagement from './pages/admin/modern/AnnouncementManagement';
 import ComingSoon from './pages/admin/modern/ComingSoon';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
               <Route path="users" element={<UserManagement />} />
               <Route path="students" element={<StudentManagement />} />
               <Route path="lecturers" element={<LecturerManagement />} />
+              <Route path="announcements" element={<AnnouncementManagement />} />
               <Route 
                 path="courses" 
                 element={
@@ -88,23 +90,6 @@ const App = () => {
                       "Grade distribution reports"
                     ]}
                     estimatedDate="Q2 2024"
-                  />
-                } 
-              />
-              <Route 
-                path="announcements" 
-                element={
-                  <ComingSoon 
-                    title="Announcements"
-                    description="System-wide announcement and notification management."
-                    features={[
-                      "Create system announcements",
-                      "Department-specific notifications",
-                      "Targeted messaging",
-                      "Read status tracking",
-                      "Announcement scheduling"
-                    ]}
-                    estimatedDate="Q1 2024"
                   />
                 } 
               />
