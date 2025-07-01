@@ -228,9 +228,16 @@ export interface EvaluationSession {
   startDate: string;
   endDate: string;
   departmentId: number;
-  activatedBy: number;
+  activatedBy?: number;
   courseCode: string;
   courseName: string;
+}
+
+export interface CreateEvaluationSessionRequest {
+  courseSessionId: number;
+  startDate: string;
+  endDate: string;
+  departmentId: number;
 }
 
 export interface EvaluationQuestion {
@@ -242,10 +249,38 @@ export interface EvaluationQuestion {
   };
 }
 
+export interface EvaluationQuestionByCategory {
+  id: number;
+  question: string;
+  categoryId: number;
+  categoryName: string;
+}
+
 export interface EvaluationCategory {
   id: number;
   name: string;
   description: string;
+}
+
+export interface EvaluationAnswer {
+  questionId: number;
+  answerId: number;
+}
+
+export interface SubmitEvaluationRequest {
+  lecturerId: number;
+  courseSessionId: number;
+  answers: EvaluationAnswer[];
+}
+
+export interface EvaluationSubmissionResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface EvaluationSessionStatusResponse {
+  success: boolean;
+  message: string;
 }
 
 export interface EvaluationAnalytics {

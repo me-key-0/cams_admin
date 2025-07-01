@@ -9,6 +9,8 @@ import UserManagement from './pages/admin/modern/UserManagement';
 import StudentManagement from './pages/admin/modern/StudentManagement';
 import LecturerManagement from './pages/admin/modern/LecturerManagement';
 import AnnouncementManagement from './pages/admin/modern/AnnouncementManagement';
+import EvaluationManagement from './pages/admin/modern/EvaluationManagement';
+import EvaluationSubmission from './pages/admin/modern/EvaluationSubmission';
 import ComingSoon from './pages/admin/modern/ComingSoon';
 
 const App = () => {
@@ -25,6 +27,8 @@ const App = () => {
               <Route path="students" element={<StudentManagement />} />
               <Route path="lecturers" element={<LecturerManagement />} />
               <Route path="announcements" element={<AnnouncementManagement />} />
+              <Route path="evaluations" element={<EvaluationManagement />} />
+              <Route path="evaluation-submit" element={<EvaluationSubmission />} />
               <Route 
                 path="courses" 
                 element={
@@ -105,23 +109,6 @@ const App = () => {
                       "Message threading",
                       "Priority-based ticketing",
                       "Response tracking"
-                    ]}
-                    estimatedDate="Q2 2024"
-                  />
-                } 
-              />
-              <Route 
-                path="evaluations" 
-                element={
-                  <ComingSoon 
-                    title="Evaluation System"
-                    description="Lecturer evaluation and feedback management system."
-                    features={[
-                      "Create evaluation sessions",
-                      "Student feedback collection",
-                      "Evaluation analytics",
-                      "Performance reports",
-                      "Anonymous feedback system"
                     ]}
                     estimatedDate="Q2 2024"
                   />
