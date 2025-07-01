@@ -29,16 +29,17 @@ const createApiInstance = (baseURL: string): AxiosInstance => {
         config.headers.Authorization = `Bearer ${token}`;
       }
       
-      // Always add required headers for admin operations
-      if (user) {
-        config.headers['X-User-Id'] = '1'; // Admin ID set to 1
+      // Only add user headers if user is authenticated
+      if (user && token) {
+        config.headers['X-User-Id'] = user.id.toString();
         config.headers['X-User-Role'] = user.role;
-        config.headers['X-User-Department'] = '1'; // Department Code set to 1
-      } else {
-        // Fallback headers when user is not available
-        config.headers['X-User-Id'] = '1';
-        config.headers['X-User-Role'] = 'ADMIN';
-        config.headers['X-User-Department'] = '1';
+        
+        // Set department code - use departmentId if available, otherwise default to '1' for admins
+        if (user.departmentId) {
+          config.headers['X-User-Department'] = user.departmentId.toString();
+        } else if (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') {
+          config.headers['X-User-Department'] = '1'; // Default department for admins
+        }
       }
       
       return config;
@@ -52,7 +53,6 @@ const createApiInstance = (baseURL: string): AxiosInstance => {
     (error) => {
       if (error.response?.status === 401) {
         useAuthStore.getState().logout();
-        window.location.href = '/login';
       }
       return Promise.reject(error);
     }

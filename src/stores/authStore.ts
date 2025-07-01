@@ -57,6 +57,9 @@ export const useAuthStore = create<AuthState>()(
           isLoading: false,
           error: null,
         });
+        
+        // Redirect to login page after logout
+        window.location.href = '/login';
       },
 
       clearError: () => {
