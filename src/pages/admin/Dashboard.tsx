@@ -3,13 +3,15 @@ import {
   UserGroupIcon,
   BookOpenIcon,
   BellIcon,
+  TrendingDownIcon,
 } from "@heroicons/react/24/outline";
+
 
 const stats = [
   {
     name: "Total Students",
     value: "1,234",
-    icon: UserGroupIcon,
+    icon: UserGroupIcon ||TrendingDownIcon,
     change: "+12%",
     changeType: "increase",
   },
